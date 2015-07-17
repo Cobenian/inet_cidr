@@ -3,7 +3,7 @@ defmodule InetCidr.Mixfile do
 
   def project do
     [app: :inet_cidr,
-     version: "1.0.0",
+     version: "1.0.1",
      name: "InetCidr",
      source_url: "https://github.com/cobenian/inet_cidr",
      elixir: "~> 1.0",
@@ -39,10 +39,7 @@ defmodule InetCidr.Mixfile do
     """
     Classless Inter-Domain Routing (CIDR) library for Elixir
 
-    This library has the following features:
-
-    * Compatible with Erlang's :inet module
-    * Supports IPv4 and IPv6
+    Compatible with Erlang's :inet module and support for IPv4 and IPv6
     """
   end
 
