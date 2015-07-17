@@ -50,6 +50,6 @@ defmodule InetCidr.Mixfile do
     [# These are the default files included in the package
      contributors: ["Bryan Weber"],
      licenses: ["Apache 2.0"],
-     links: %{"GitHub" => "https://github.com/cobenian/inet_cidr"]
+     links: %{"GitHub" => "https://github.com/cobenian/inet_cidr"}]
   end
 end
