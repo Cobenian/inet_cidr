@@ -1,7 +1,7 @@
 InetCidr
 ========
 
-** Classless Inter-Domain Routing (CIDR) library for Elixir **
+  Classless Inter-Domain Routing (CIDR) library for Elixir
 
 This library has the following features:
 
