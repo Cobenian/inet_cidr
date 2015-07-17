@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>InetCidr</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="css/elixir.css" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" charset="utf-8">
+      relpath = '';
+      if (relpath != '') relpath += '/';
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/highlight.pack.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      hljs.initHighlightingOnLoad();
+      hljs.configure({languages: []}); //disable autodetect
+    </script>
+  </head>
+
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+
+    <section id="content">
+      <div class="breadcrumbs">InetCidr v1.0.0 &rarr; <a href="overview.html">Overview</a> &rarr; <a href="InetCidr.html">InetCidr</a></div>
+      <h1>
+        InetCidr
+        
+      </h1>
+
+      <ul class="summary_links">
+        
+          <li><a href="#summary">Summary</a></li>
+        
+        
+        
+          <li><a href="#functions_details">Functions</a></li>
+        
+        
+        
+      </ul>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Classless Inter-Domain Routing (CIDR) that is compatible with :inet and
+supports both IPv4 and IPv6</p>
+
+        </section>
+      
+
+      
+        <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L1" class="view_source">Source</a>
+      
+
+      
+        <h2 id="summary">Summary<span class="detail_header_links"><a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a></span></h2>
+        <table class="summary">
+          <tr>
+  <td class="summary_signature"><a href="#address_count/2">address_count(ip, len)</a></td>
+  
+    <td class="summary_synopsis"><p>The number of IP addresses included in the CIDR block</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#bit_count/1">bit_count(arg1)</a></td>
+  
+    <td class="summary_synopsis"><p>The number of bits in the address family (32 for IPv4 and 128 for IPv6)</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#contains?/2">contains?(arg1, arg2)</a></td>
+  
+    <td class="summary_synopsis"><p>Returns true if the CIDR block contains the IP address, false otherwise</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#parse/2">parse(cidr_string, adjust \\ false)</a></td>
+  
+    <td class="summary_synopsis"><p>Parses a string containing either an IPv4 or IPv6 CIDR block using the
+notation like 192.168.0.0/16 or 2001:abcd::/32. It returns a tuple with the
+start address, end address and cidr length</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#parse_address!/1">parse_address!(prefix)</a></td>
+  
+    <td class="summary_synopsis"><p>Convenience function that takes an IPv4 or IPv6 address as a string and
+returns the address.  It raises an exception if the string does not contain
+a valid ip address</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#to_string/1">to_string(arg1)</a></td>
+  
+    <td class="summary_synopsis"><p>Prints the CIDR block to a string such that it can be parsed back to a CIDR
+block by this module</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#v4?/1">v4?(arg1)</a></td>
+  
+    <td class="summary_synopsis"><p>Returns true if the value passed in is an IPv4 address, false otherwise</p>
+</td>
+  
+</tr>
+<tr>
+  <td class="summary_signature"><a href="#v6?/1">v6?(arg1)</a></td>
+  
+    <td class="summary_synopsis"><p>Returns true if the value passed in is an IPv6 address, false otherwise</p>
+</td>
+  
+</tr>
+
+        </table>
+      
+
+      
+
+      
+        <section id="functions_details" class="details_list">
+          <h2>Functions</h2>
+          <section class="detail">
+  <div class="detail_header" id="address_count/2">
+    <span class="signature"><strong>address_count(ip, len)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#address_count/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>  The number of IP addresses included in the CIDR block.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L47" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="bit_count/1">
+    <span class="signature"><strong>bit_count(arg1)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#bit_count/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>The number of bits in the address family (32 for IPv4 and 128 for IPv6)</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L54" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="contains?/2">
+    <span class="signature"><strong>contains?(arg1, arg2)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#contains?/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Returns true if the CIDR block contains the IP address, false otherwise.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L60" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="parse/2">
+    <span class="signature"><strong>parse(cidr_string, adjust \\ false)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#parse/2" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Parses a string containing either an IPv4 or IPv6 CIDR block using the
+notation like 192.168.0.0/16 or 2001:abcd::/32. It returns a tuple with the
+start address, end address and cidr length.</p>
+<p>You can optionally pass true as the second argument to adjust the start ip
+address if it is not consistent with the cidr length.
+For example, 192.168.0.0/0 would be adjusted to have a start ip of 0.0.0.0
+instead of 192.168.0.0. The default behavior is to be more strict and raise
+an exception when this occurs.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L20" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="parse_address!/1">
+    <span class="signature"><strong>parse_address!(prefix)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#parse_address!/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Convenience function that takes an IPv4 or IPv6 address as a string and
+returns the address.  It raises an exception if the string does not contain
+a valid ip address.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L39" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="to_string/1">
+    <span class="signature"><strong>to_string(arg1)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#to_string/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>Prints the CIDR block to a string such that it can be parsed back to a CIDR
+block by this module.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L30" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="v4?/1">
+    <span class="signature"><strong>v4?(arg1)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#v4?/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>  Returns true if the value passed in is an IPv4 address, false otherwise.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L83" class="view_source">Source</a>
+  
+</section>
+<section class="detail">
+  <div class="detail_header" id="v6?/1">
+    <span class="signature"><strong>v6?(arg1)</strong></span>
+    <div class="detail_header_links">
+      <span class="detail_type">(function)</span>
+      <a href="#v6?/1" class="detail_link" title="Link to this function">#</a>
+      <a class="to_top_link" href="#content" title="To the top of the page">&uarr;</a>
+    </div>
+  </div>
+  
+  <section class="docstring">
+    <p>  Returns true if the value passed in is an IPv6 address, false otherwise.</p>
+
+  </section>
+  
+    <a href="https://github.com/cobenian/inet_cidr/blob/master/lib/inet_cidr.ex#L89" class="view_source">Source</a>
+  
+</section>
+
+        </section>
+      
+
+      
+
+      
+    </section>
+  </body>
+</html>
