@@ -37,7 +37,7 @@ defmodule InetCidr do
   a valid ip address.
   """
   def parse_address!(prefix) do
-    {:ok, start_address} = prefix |> String.to_char_list |> :inet.parse_address
+    {:ok, start_address} = prefix |> String.to_charlist |> :inet.parse_address
     start_address
   end
 
