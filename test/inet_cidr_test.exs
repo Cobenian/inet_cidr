@@ -34,7 +34,7 @@ defmodule InetCidrTest do
 
   test "printing cidr block to string" do
     assert InetCidr.to_string({{192,168,0,0}, {192,168,255,255}, 16}) == "192.168.0.0/16"
-    assert InetCidr.to_string({{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}) == "2001:ABCD::/32"
+    assert InetCidr.to_string({{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}) |> String.upcase == "2001:ABCD::/32"
   end  
 
   test "can parse ipv4 address" do
