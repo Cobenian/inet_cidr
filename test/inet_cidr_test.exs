@@ -30,12 +30,13 @@ defmodule InetCidrTest do
     assert InetCidr.parse("2001:abcd::/35") == {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 8191, 65535, 65535, 65535, 65535, 65535}, 35}
     assert InetCidr.parse("2001:abcd::/36") == {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 4095, 65535, 65535, 65535, 65535, 65535}, 36}
     assert InetCidr.parse("2001:abcd::/128") == {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 0, 0, 0, 0, 0, 0}, 128}
+    assert InetCidr.parse("2001:db8::/48") == {{8193, 3512, 0, 0, 0, 0, 0, 0}, {8193, 3512, 0, 65535, 65535, 65535, 65535, 65535}, 48}
   end
 
   test "printing cidr block to string" do
     assert InetCidr.to_string({{192,168,0,0}, {192,168,255,255}, 16}) == "192.168.0.0/16"
     assert InetCidr.to_string({{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}) |> String.upcase == "2001:ABCD::/32"
-  end  
+  end
 
   test "can parse ipv4 address" do
     assert InetCidr.parse_address!("76.58.129.251") == {76,58,129,251}
