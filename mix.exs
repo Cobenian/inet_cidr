@@ -3,7 +3,7 @@ defmodule InetCidr.Mixfile do
 
   def project do
     [app: :inet_cidr,
-     version: "1.0.3",
+     version: "1.0.4",
      name: "InetCidr",
      source_url: "https://github.com/cobenian/inet_cidr",
      elixir: "~> 1.0",
