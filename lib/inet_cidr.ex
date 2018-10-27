@@ -105,24 +105,34 @@ defmodule InetCidr do
   # internal functions
 
   defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks}) do
-    for a <- a_chunks,
-        b <- b_chunks,
-        c <- c_chunks,
-        d <- d_chunks do
-	  {a, b, c, d}
+    Stream.flat_map a_chunks, fn a ->
+      Stream.flat_map b_chunks, fn b ->
+	Stream.flat_map c_chunks, fn c ->
+	  Stream.flat_map d_chunks, fn d ->
+	    [{a, b, c, d}]
+	  end
+	end
+      end
     end
   end
 
   defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks, e_chunks, f_chunks, g_chunks, h_chunks}) do
-    for a <- a_chunks,
-        b <- b_chunks,
-        c <- c_chunks,
-        d <- d_chunks,
-        e <- e_chunks,
-        f <- f_chunks,
-        g <- g_chunks,
-        h <- h_chunks do
-	  {a, b, c, d, e, f, g, h}
+    Stream.flat_map a_chunks, fn a ->
+      Stream.flat_map b_chunks, fn b ->
+	Stream.flat_map c_chunks, fn c ->
+	  Stream.flat_map d_chunks, fn d ->
+	    Stream.flat_map e_chunks, fn e ->
+	      Stream.flat_map f_chunks, fn f ->
+		Stream.flat_map g_chunks, fn g ->
+		  Stream.flat_map h_chunks, fn h ->
+		    [{a, b, c, d, e, f, g, h}]
+		  end
+		end
+	      end
+	    end
+	  end
+	end
+      end
     end
   end
 

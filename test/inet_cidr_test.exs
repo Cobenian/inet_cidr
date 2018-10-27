@@ -104,37 +104,47 @@ defmodule InetCidrTest do
 
   test "list IPv4 addresses" do
     block = {{192, 168, 0, 0}, {192, 168, 0, 7}, 29}
-    assert InetCidr.list_addresses(block) == [{192,168,0,0},
-					      {192,168,0,1},
-					      {192,168,0,2},
-					      {192,168,0,3},
-					      {192,168,0,4},
-					      {192,168,0,5},
-					      {192,168,0,6},
-					      {192,168,0,7}]
+    addrs =
+      InetCidr.list_addresses(block)
+      |> Enum.to_list
+    assert addrs == [{192,168,0,0},
+		     {192,168,0,1},
+		     {192,168,0,2},
+		     {192,168,0,3},
+		     {192,168,0,4},
+		     {192,168,0,5},
+		     {192,168,0,6},
+		     {192,168,0,7}]
   end
 
   test "list lots of IPv4 addresses" do
     block = {{10, 0, 0, 0}, {10, 63, 255, 255}, 10}
-    addrs = InetCidr.list_addresses(block)
+    addrs =
+      InetCidr.list_addresses(block)
+      |> Enum.to_list
     assert Enum.count(addrs) == InetCidr.address_count({10, 0, 0, 0}, 10)
   end
 
   test "list IPv6 addresses" do
     block = {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 0, 0, 0, 0, 0, 7}, 125}
-    assert InetCidr.list_addresses(block) == [{8193,43981,0,0,0,0,0,0},
-                                              {8193,43981,0,0,0,0,0,1},
-                                              {8193,43981,0,0,0,0,0,2},
-                                              {8193,43981,0,0,0,0,0,3},
-                                              {8193,43981,0,0,0,0,0,4},
-                                              {8193,43981,0,0,0,0,0,5},
-                                              {8193,43981,0,0,0,0,0,6},
-                                              {8193,43981,0,0,0,0,0,7}]
+    addrs =
+      InetCidr.list_addresses(block)
+      |> Enum.to_list
+    assert addrs == [{8193,43981,0,0,0,0,0,0},
+                     {8193,43981,0,0,0,0,0,1},
+                     {8193,43981,0,0,0,0,0,2},
+                     {8193,43981,0,0,0,0,0,3},
+                     {8193,43981,0,0,0,0,0,4},
+                     {8193,43981,0,0,0,0,0,5},
+                     {8193,43981,0,0,0,0,0,6},
+                     {8193,43981,0,0,0,0,0,7}]
   end
 
   test "list lots of IPv6 addresses" do
     block = {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 0, 0, 0, 0, 3, 65535}, 110}
-    addrs = InetCidr.list_addresses(block)
+    addrs =
+      InetCidr.list_addresses(block)
+      |> Enum.to_list
     assert Enum.count(addrs) == InetCidr.address_count({8193, 43981, 0, 0, 0, 0, 0, 0}, 110)
   end
 
