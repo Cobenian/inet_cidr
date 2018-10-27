@@ -100,6 +100,18 @@ defmodule InetCidr do
     |> combine_chunks
   end
 
+  def list_addresses({{a,b,c,d,e,f,g,h}, {i,j,k,l,m,n,o,p}, _bits}) do
+    {Range.new(a,i) |> Enum.to_list,
+     Range.new(b,j) |> Enum.to_list,
+     Range.new(c,k) |> Enum.to_list,
+     Range.new(d,l) |> Enum.to_list,
+     Range.new(e,m) |> Enum.to_list,
+     Range.new(f,n) |> Enum.to_list,
+     Range.new(g,o) |> Enum.to_list,
+     Range.new(h,p) |> Enum.to_list}
+    |> combine_chunks
+  end
+
   # internal functions
 
   defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks}) do
@@ -108,6 +120,19 @@ defmodule InetCidr do
         c <- c_chunks,
         d <- d_chunks do
 	  {a, b, c, d}
+    end
+  end
+
+  defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks, e_chunks, f_chunks, g_chunks, h_chunks}) do
+    for a <- a_chunks,
+        b <- b_chunks,
+        c <- c_chunks,
+        d <- d_chunks,
+        e <- e_chunks,
+        f <- f_chunks,
+        g <- g_chunks,
+        h <- h_chunks do
+	  {a, b, c, d, e, f, g, h}
     end
   end
 
