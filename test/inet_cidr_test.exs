@@ -115,7 +115,7 @@ defmodule InetCidrTest do
   end
 
   test "list lots of IPv4 addresses" do
-    block = {{10,0,0,0}, {10,63,255,255}, 8}
+    block = {{10, 0, 0, 0}, {10, 63, 255, 255}, 8}
     addrs = InetCidr.list_addresses(block)
     assert Enum.count(addrs) == InetCidr.address_count({10, 0, 0, 0}, 10)
   end
