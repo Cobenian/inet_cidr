@@ -102,4 +102,22 @@ defmodule InetCidrTest do
     assert InetCidr.contains?(block, {65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535}) == false
   end
 
+  test "list addresses" do
+    block = {{192, 168, 0, 0}, {192, 168, 0, 7}, 29}
+    assert InetCidr.list_addresses(block) == [{192,168,0,0},
+					      {192,168,0,1},
+					      {192,168,0,2},
+					      {192,168,0,3},
+					      {192,168,0,4},
+					      {192,168,0,5},
+					      {192,168,0,6},
+					      {192,168,0,7}]
+  end
+
+  test "list lots of addresses" do
+    block = {{10,0,0,0}, {10,63,255,255}, 8}
+    addrs = InetCidr.list_addresses(block)
+    assert Enum.count(addrs) == InetCidr.address_count({10, 0, 0, 0}, 10)
+  end
+
 end

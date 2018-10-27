@@ -89,7 +89,27 @@ defmodule InetCidr do
   def v6?({a,b,c,d,e,f,g,h}) when a in 0..65535 and b in 0..65535 and c in 0..65535 and d in 0..65535 and e in 0..65535 and f in 0..65535 and g in 0..65535 and h in 0..65535, do: true
   def v6?(_), do: false
 
+  @doc """
+    Returns a list of all IP tuples in the given CIDR range.
+  """
+  def list_addresses({{a,b,c,d}, {e,f,g,h}, _bits}) do
+    {Range.new(a,e) |> Enum.to_list,
+     Range.new(b,f) |> Enum.to_list,
+     Range.new(c,g) |> Enum.to_list,
+     Range.new(d,h) |> Enum.to_list}
+    |> combine_chunks
+  end
+
   # internal functions
+
+  defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks}) do
+    for a <- a_chunks,
+        b <- b_chunks,
+        c <- c_chunks,
+        d <- d_chunks do
+	  {a, b, c, d}
+    end
+  end
 
   defp parse_cidr!(cidr_string, adjust) do
     [prefix, prefix_length_str] = String.split(cidr_string, "/", parts: 2)
