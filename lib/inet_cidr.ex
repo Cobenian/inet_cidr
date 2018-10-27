@@ -90,7 +90,7 @@ defmodule InetCidr do
   def v6?(_), do: false
 
   @doc """
-    Returns a list of all IP tuples in the given CIDR range.
+    Returns a Stream of all IP tuples in the given CIDR range.
   """
   def list_addresses({{a,b,c,d}, {e,f,g,h}, _bits}) do
     {a..e, b..f, c..g, d..h}
