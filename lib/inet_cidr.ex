@@ -93,22 +93,12 @@ defmodule InetCidr do
     Returns a list of all IP tuples in the given CIDR range.
   """
   def list_addresses({{a,b,c,d}, {e,f,g,h}, _bits}) do
-    {Range.new(a,e) |> Enum.to_list,
-     Range.new(b,f) |> Enum.to_list,
-     Range.new(c,g) |> Enum.to_list,
-     Range.new(d,h) |> Enum.to_list}
+    {a..e, b..f, c..g, d..h}
     |> combine_chunks
   end
 
   def list_addresses({{a,b,c,d,e,f,g,h}, {i,j,k,l,m,n,o,p}, _bits}) do
-    {Range.new(a,i) |> Enum.to_list,
-     Range.new(b,j) |> Enum.to_list,
-     Range.new(c,k) |> Enum.to_list,
-     Range.new(d,l) |> Enum.to_list,
-     Range.new(e,m) |> Enum.to_list,
-     Range.new(f,n) |> Enum.to_list,
-     Range.new(g,o) |> Enum.to_list,
-     Range.new(h,p) |> Enum.to_list}
+    {a..f, b..j, c..k, d..l, e..m, f..n, g..o, h..p}
     |> combine_chunks
   end
 
