@@ -90,7 +90,52 @@ defmodule InetCidr do
   def v6?({a,b,c,d,e,f,g,h}) when a in 0..65535 and b in 0..65535 and c in 0..65535 and d in 0..65535 and e in 0..65535 and f in 0..65535 and g in 0..65535 and h in 0..65535, do: true
   def v6?(_), do: false
 
+  @doc """
+    Returns a Stream of all IP tuples in the given CIDR range.
+  """
+  def list_addresses({{a,b,c,d}, {e,f,g,h}, _bits}) do
+    {a..e, b..f, c..g, d..h}
+    |> combine_chunks
+  end
+
+  def list_addresses({{a,b,c,d,e,f,g,h}, {i,j,k,l,m,n,o,p}, _bits}) do
+    {a..i, b..j, c..k, d..l, e..m, f..n, g..o, h..p}
+    |> combine_chunks
+  end
+
   # internal functions
+
+  defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks}) do
+    Stream.flat_map a_chunks, fn a ->
+      Stream.flat_map b_chunks, fn b ->
+	Stream.flat_map c_chunks, fn c ->
+	  Stream.flat_map d_chunks, fn d ->
+	    [{a, b, c, d}]
+	  end
+	end
+      end
+    end
+  end
+
+  defp combine_chunks({a_chunks, b_chunks, c_chunks, d_chunks, e_chunks, f_chunks, g_chunks, h_chunks}) do
+    Stream.flat_map a_chunks, fn a ->
+      Stream.flat_map b_chunks, fn b ->
+	Stream.flat_map c_chunks, fn c ->
+	  Stream.flat_map d_chunks, fn d ->
+	    Stream.flat_map e_chunks, fn e ->
+	      Stream.flat_map f_chunks, fn f ->
+		Stream.flat_map g_chunks, fn g ->
+		  Stream.flat_map h_chunks, fn h ->
+		    [{a, b, c, d, e, f, g, h}]
+		  end
+		end
+	      end
+	    end
+	  end
+	end
+      end
+    end
+  end
 
   defp parse_cidr!(cidr_string, adjust) do
     [prefix, prefix_length_str] = String.split(cidr_string, "/", parts: 2)
