@@ -1,14 +1,19 @@
-InetCidr
-========
+# InetCidr
 
-  Classless Inter-Domain Routing (CIDR) library for Elixir
+<!-- MDOC !-->
 
-This library has the following features:
+[![Module Version](https://img.shields.io/hexpm/v/inet_cidr.svg)](https://hex.pm/packages/inet_cidr)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/inet_cidr/)
+[![Total Download](https://img.shields.io/hexpm/dt/inet_cidr.svg)](https://hex.pm/packages/inet_cidr)
+[![License](https://img.shields.io/hexpm/l/inet_cidr.svg)](https://github.com/cobenian/inet_cidr/blob/master/LICENSE)
+[![Last Updated](https://img.shields.io/github/last-commit/cobenian/inet_cidr.svg)](https://github.com/cobenian/inet_cidr/commits/master)
 
-* Compatible with Erlang's :inet module
-* Supports IPv4 and IPv6
+Classless Inter-Domain Routing (CIDR) library for Elixir that is compatible
+with Erlang's `:inet` and supports both IPv4 and IPv6.
 
 ## Install
+
+Add `:inet_cidr` to your list of dependencies in `mix.exs`:
 
 ```elixir
 defp deps do
@@ -78,4 +83,14 @@ false
 
 ## License
 
-[LICENSE](LICENSE)
+Copyright (c) 2015 Bryan Weber
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

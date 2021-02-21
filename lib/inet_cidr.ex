@@ -1,20 +1,21 @@
 defmodule InetCidr do
-  use Bitwise
+  @external_resource "README.md"
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
 
-  @moduledoc """
-  Classless Inter-Domain Routing (CIDR) that is compatible with :inet and
-  supports both IPv4 and IPv6
-  """
+  use Bitwise
 
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
-  notation like 192.168.0.0/16 or 2001:abcd::/32. It returns a tuple with the
+  notation like `192.168.0.0/16` or `2001:abcd::/32`. It returns a tuple with the
   start address, end address and cidr length.
 
-  You can optionally pass true as the second argument to adjust the start ip
+  You can optionally pass true as the second argument to adjust the start `IP`
   address if it is not consistent with the cidr length.
-  For example, 192.168.0.0/0 would be adjusted to have a start ip of 0.0.0.0
-  instead of 192.168.0.0. The default behavior is to be more strict and raise
+  For example, `192.168.0.0/0` would be adjusted to have a start IP of `0.0.0.0`
+  instead of `192.168.0.0`. The default behavior is to be more strict and raise
   an exception when this occurs.
   """
   def parse(cidr_string, adjust \\ false) do
@@ -34,7 +35,7 @@ defmodule InetCidr do
   @doc """
   Convenience function that takes an IPv4 or IPv6 address as a string and
   returns the address.  It raises an exception if the string does not contain
-  a valid ip address.
+  a valid IP address.
   """
   def parse_address!(prefix) do
     {:ok, start_address} = prefix |> String.to_charlist |> :inet.parse_address
@@ -42,7 +43,7 @@ defmodule InetCidr do
   end
 
   @doc """
-    The number of IP addresses included in the CIDR block.
+  The number of IP addresses included in the CIDR block.
   """
   def address_count(ip, len) do
     1 <<< (bit_count(ip)-len)
@@ -78,13 +79,13 @@ defmodule InetCidr do
   def contains?(_, _), do: false
 
   @doc """
-    Returns true if the value passed in is an IPv4 address, false otherwise.
+  Returns true if the value passed in is an IPv4 address, false otherwise.
   """
   def v4?({a,b,c,d}) when a in 0..255 and b in 0..255 and c in 0..255 and d in 0..255, do: true
   def v4?(_), do: false
 
   @doc """
-    Returns true if the value passed in is an IPv6 address, false otherwise.
+  Returns true if the value passed in is an IPv6 address, false otherwise.
   """
   def v6?({a,b,c,d,e,f,g,h}) when a in 0..65535 and b in 0..65535 and c in 0..65535 and d in 0..65535 and e in 0..65535 and f in 0..65535 and g in 0..65535 and h in 0..65535, do: true
   def v6?(_), do: false
@@ -168,5 +169,4 @@ defmodule InetCidr do
   defp band_with_mask( {a,b,c,d,e,f,g,h}, {i,j,k,l,m,n,o,p} ) do
     {band(a,i),band(b,j),band(c,k),band(d,l),band(e,m),band(f,n),band(g,o),band(h,p)}
   end
-
 end
