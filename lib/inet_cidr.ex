@@ -5,7 +5,7 @@ defmodule InetCidr do
              |> String.split("<!-- MDOC !-->")
              |> Enum.fetch!(1)
 
-  use Bitwise
+  import Bitwise
 
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
