@@ -58,10 +58,11 @@ defmodule InetCidrTest do
   test "printing cidr block to string" do
     assert InetCidr.to_string({{192, 168, 0, 0}, {192, 168, 255, 255}, 16}) == "192.168.0.0/16"
 
-    assert InetCidr.to_string(
-             {{8193, 43981, 0, 0, 0, 0, 0, 0},
-              {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}
-           )
+    assert InetCidr.to_string({
+             {8193, 43981, 0, 0, 0, 0, 0, 0},
+             {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535},
+             32
+           })
            |> String.upcase() == "2001:ABCD::/32"
   end
 
@@ -121,8 +122,11 @@ defmodule InetCidrTest do
 
   test "ipv6 block contains address?" do
     block =
-      {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 8191, 65535, 65535, 65535, 65535, 65535},
-       35}
+      {
+        {8193, 43981, 0, 0, 0, 0, 0, 0},
+        {8193, 43981, 8191, 65535, 65535, 65535, 65535, 65535},
+        35
+      }
 
     assert InetCidr.contains?(block, {8193, 43981, 0, 0, 0, 0, 0, 0}) == true
     assert InetCidr.contains?(block, {8193, 43981, 0, 0, 0, 0, 0, 1}) == true

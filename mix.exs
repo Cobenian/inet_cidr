@@ -6,20 +6,23 @@ defmodule InetCidr.Mixfile do
   def project do
     [
       app: :inet_cidr,
-      version: "1.0.4",
-      name: "InetCidr",
+      version: "1.0.5",
       elixir: "~> 1.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+
+      # docs
+      name: "InetCidr",
+      source_url: @source_url
     ]
   end
 
   def application do
-    [applications: [:logger]]
+    [extra_applications: [:logger]]
   end
 
   defp deps do
@@ -29,9 +32,11 @@ defmodule InetCidr.Mixfile do
   defp docs do
     [
       main: "InetCidr",
-      source_url: @source_url,
-      extra_section: [],
-      api_reference: false
+      # source_url: @source_url,
+      # extra_section: [],
+      extras: ["README.md", "LICENSE"],
+      # api_reference: false
+      authors: ["Bryan Weber"]
     ]
   end
 

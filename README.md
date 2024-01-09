@@ -83,7 +83,7 @@ false
 
 ## License
 
-Copyright (c) 2015 Bryan Weber
+Copyright (c) 2015-2024 Bryan Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
