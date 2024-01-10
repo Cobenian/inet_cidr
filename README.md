@@ -25,30 +25,40 @@ end
 
 ## Usage
 
-### Parsing a CIDR string
+### Parsing a CIDR string (IPv4 or IPv6)
 
 ```elixir
-iex(1)> InetCidr.parse("192.168.0.0/16")
+iex(1)> InetCidr.parse_cidr("192.168.0.0/16")
+{:ok, {{192,168,0,0}, {192,168,255,255}, 16}}
+
+iex(2)> InetCidr.parse_cidr!("192.168.0.0/16")
 {{192,168,0,0}, {192,168,255,255}, 16}
 
-iex(2)> InetCidr.parse("2001:abcd::/32")
+iex(3)> InetCidr.parse_cidr("2001:abcd::/32")
+{:ok, {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}}
+
+iex(4)> InetCidr.parse_cidr!("2001:abcd::/32")
 {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}
 ```
 
 ### Printing a CIDR block to string
 
 ```elixir
-iex(1)> "192.168.0.0/16" |> InetCidr.parse |> InetCidr.to_string
+iex(1)> "192.168.0.0/16" |> InetCidr.parse_cidr! |> InetCidr.to_string
 "192.168.0.0/16"
 
-iex(2)> "2001:abcd::/32" |> InetCidr.parse |> InetCidr.to_string
+iex(2)> "2001:abcd::/32" |> InetCidr.parse_cidr! |> InetCidr.to_string
 "2001:ABCD::/32"
 ```
 
 ### Check whether a CIDR block contains an IP address
 
+There are also `parse_cidr/1` and `parse_address/1` versions that return `{:ok,_cidr}` and `{:error,_msg}` tuples.
+
+#### IPv4
+
 ```elixir
-iex(1)> cidr = InetCidr.parse("192.168.0.0/16")
+iex(1)> cidr = InetCidr.parse_cidr!("192.168.0.0/16")
 {{192,168,0,0}, {192,168,255,255}, 16}
 
 iex(2)> address1 = InetCidr.parse_address!("192.168.15.20")
@@ -64,8 +74,10 @@ iex(5)> InetCidr.contains?(cidr, address2)
 false
 ```
 
+#### IPv6
+
 ```elixir
-iex(1)> cidr = InetCidr.parse("2001:abcd::/32")
+iex(1)> cidr = InetCidr.parse_cidr!("2001:abcd::/32")
 {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}
 
 iex(2)> address1 = InetCidr.parse_address!("2001:abcd::")
@@ -83,7 +95,7 @@ false
 
 ## License
 
-Copyright (c) 2015-2024 Bryan Weber
+Copyright (c) 2015-2024 Cobenian and Bryan Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
