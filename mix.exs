@@ -52,7 +52,7 @@ defmodule InetCidr.Mixfile do
       links: %{
         "GitHub" => @source_url,
         "Changelog" => "https://hexdocs.pm/inet_cidr/changelog.html",
-        "Cheatsheet" => "https://hexdocs.pm/inet_cidr/cheetsheet.html"
+        "Cheatsheet" => "https://hexdocs.pm/inet_cidr/cheatsheet.html"
       }
     ]
   end
