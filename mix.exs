@@ -13,11 +13,10 @@ defmodule InetCidr.Mixfile do
       description: description(),
       package: package(),
       deps: deps(),
-      docs: docs(),
-
       # docs
       name: "InetCidr",
-      source_url: @source_url
+      source_url: @source_url,
+      docs: docs()
     ]
   end
 
@@ -32,10 +31,7 @@ defmodule InetCidr.Mixfile do
   defp docs do
     [
       main: "InetCidr",
-      # source_url: @source_url,
-      # extra_section: [],
-      extras: ["README.md", "LICENSE", "CHANGELOG.md"],
-      # api_reference: false
+      extras: ["README.md", "LICENSE", "CHANGELOG.md", "Cheatsheet.cheatmd"],
       authors: ["Bryan Weber"]
     ]
   end
