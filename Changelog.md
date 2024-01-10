@@ -1,6 +1,6 @@
 # InetCidr Changelog
 
-### Version: 1.0.6 (Jan 10, 2024)
+### Version: 1.0.7 (Jan 10, 2024)
 
 ```
 Docs: Updated README to not use deprecated functions
