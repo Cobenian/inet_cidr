@@ -6,7 +6,7 @@ defmodule InetCidr.Mixfile do
   def project do
     [
       app: :inet_cidr,
-      version: "1.0.7",
+      version: "1.0.8",
       elixir: "~> 1.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,

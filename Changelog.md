@@ -1,5 +1,11 @@
 # InetCidr Changelog
 
+## Version: 1.0.8 (2024-01-10)
+
+```
+Misc: Updated links to include Cheatsheet and Changelog
+```
+
 ## Version: 1.0.7 (2024-01-10)
 
 ```
