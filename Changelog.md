@@ -3,6 +3,12 @@
 ### Version: 1.0.6 (Jan 10, 2024)
 
 ```
+Docs: Updated README to not use deprecated functions
+```
+
+### Version: 1.0.6 (Jan 10, 2024)
+
+```
 - Deprecated: InetCidr.parse/1 (Use InetCidr.parse_cidr!/1 instead)
 - Deprecated: InetCidr.parse/2 (Use InetCidr.parse_cidr!/2 instead)
 - Code: Added InetCidr.parse_cidr/2
