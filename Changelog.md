@@ -1,16 +1,11 @@
 # InetCidr Changelog
 
-## Version: 1.0.8 (2024-01-10)
+## Version: 1.0.7 (2024-01-10)
 
 ```
 Code: Updated `calc_end_address/1` to return `{:ok, address}` or `{:error, reason}` tuple.
 Code: Added `cal_end_address!/1`
 Misc: Added Cheatsheet
-```
-
-## Version: 1.0.7 (2024-01-10) DO NOT USE
-
-```
 Docs: Updated README to not use deprecated functions
 ```
 
