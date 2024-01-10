@@ -18,18 +18,74 @@ defmodule InetCidr do
   instead of `192.168.0.0`. The default behavior is to be more strict and raise
   an exception when this occurs.
   """
+  @deprecated "Use `parse_cidr!/2` instead (or `parse_cidr/2` for {:ok, {start,end,prefix}} / {:error,msg} tuples)"
   def parse(cidr_string, adjust \\ false) do
-    {start_address, prefix_length} = parse_cidr!(cidr_string, adjust)
+    {start_address, prefix_length} = parse_cidr_block!(cidr_string, adjust)
     end_address = calc_end_address(start_address, prefix_length)
     {start_address, end_address, prefix_length}
   end
 
   @doc """
-  Prints the CIDR block to a string such that it can be parsed back to a CIDR
-  block by this module.
+  Parses a string containing either an IPv4 or IPv6 CIDR block using the
+  notation like `192.168.0.0/16` or `2001:abcd::/32`. 
+
+  You can optionally pass true as the second argument to adjust the start `IP`
+  address if it is not consistent with the cidr length.
+  For example, `192.168.0.0/0` would be adjusted to have a start IP of `0.0.0.0`
+  instead of `192.168.0.0`. 
+
+  It returns an `{:ok, {start address, end address, cidr length}}` tuple if the string contains a valid IP address.
+
+  It returns an `{:error, reason}` tuple if the it cannot be parsed.
   """
-  def to_string({start_address, _end_address, cidr_length}) do
-    "#{:inet.ntoa(start_address)}/#{cidr_length}"
+  def parse_cidr(cidr_string, adjust \\ false) do
+    try do
+      {:ok, parse_cidr!(cidr_string, adjust)}
+    rescue
+      e ->
+        # do NOT double wrap error tuples
+        case e do
+          {:error, err} -> {:error, err}
+          err -> {:error, err}
+        end
+    end
+  end
+
+  @doc """
+  Parses a string containing either an IPv4 or IPv6 CIDR block using the
+  notation like `192.168.0.0/16` or `2001:abcd::/32`. It returns a tuple with the
+  start address, end address and cidr length.
+
+  You can optionally pass true as the second argument to adjust the start `IP`
+  address if it is not consistent with the cidr length.
+  For example, `192.168.0.0/0` would be adjusted to have a start IP of `0.0.0.0`
+  instead of `192.168.0.0`. The default behavior is to be more strict and raise
+  an exception when this occurs.
+  """
+  def parse_cidr!(cidr_string, adjust \\ false) do
+    parse(cidr_string, adjust)
+  end
+
+  @doc """
+  Convenience function that takes an IPv4 or IPv6 address as a string and
+  returns the address.  
+
+  It returns an `{:ok, address}` tuple if the string contains a valid IP address.
+
+  It returns an `{:error, reason}` tuple if the string
+  does not contain a valid IP address.
+  """
+  def parse_address(prefix) do
+    try do
+      {:ok, parse_address!(prefix)}
+    rescue
+      e ->
+        # do NOT double wrap error tuples
+        case e do
+          {:error, err} -> {:error, err}
+          err -> {:error, err}
+        end
+    end
   end
 
   @doc """
@@ -38,8 +94,18 @@ defmodule InetCidr do
   a valid IP address.
   """
   def parse_address!(prefix) do
-    {:ok, start_address} = prefix |> String.to_charlist() |> :inet.parse_address()
-    start_address
+    case prefix |> String.to_charlist() |> :inet.parse_address() do
+      {:ok, start_address} -> start_address
+      {:error, _} -> raise "Invalid address: #{prefix}"
+    end
+  end
+
+  @doc """
+  Prints the CIDR block to a string such that it can be parsed back to a CIDR
+  block by this module.
+  """
+  def to_string({start_address, _end_address, cidr_length}) do
+    "#{:inet.ntoa(start_address)}/#{cidr_length}"
   end
 
   @doc """
@@ -99,7 +165,7 @@ defmodule InetCidr do
 
   # internal functions
 
-  defp parse_cidr!(cidr_string, adjust) do
+  defp parse_cidr_block!(cidr_string, adjust) do
     [prefix, prefix_length_str] = String.split(cidr_string, "/", parts: 2)
     start_address = parse_address!(prefix)
     {prefix_length, _} = Integer.parse(prefix_length_str)
@@ -117,7 +183,12 @@ defmodule InetCidr do
     {masked, prefix_length}
   end
 
-  defp calc_end_address(start_address, prefix_length) do
+  @doc """
+  Calculates the end of a CIDR block given the start address and prefix length.
+
+  Assumes valid start address and prefix length.
+  """
+  def calc_end_address(start_address, prefix_length) do
     bor_with_mask(start_address, end_mask(start_address, prefix_length))
   end
 
