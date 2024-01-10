@@ -1,0 +1,52 @@
+# InetCidr Cheatsheet
+
+## Parse a CIDR block
+
+This works for IPv4 and IPv6 CIDR blocks. There is also `parse_cidr!/1`.
+
+```elixir
+iex> InetCidr.parse_cidr("192.168.0.0/16")
+{:ok, {{192,168,0,0}, {192,168,255,255}, 16}}
+```
+
+## Parse an IP Address
+
+This works for IPv4 and IPv6 addresses. There is also `parse_address!/1`.
+
+```elixir
+iex> InetCidr.parse_address("192.168.15.20")
+{:ok, {192,168,15,20}}
+```
+
+## Get the string representation of a CIDR block
+
+This works for IPv4 and IPv6 addresses.
+
+```elixir
+iex> "192.168.0.0/16" |> InetCidr.parse_cidr! |> InetCidr.to_string
+"192.168.0.0/16"
+```
+
+## Get the end of a CIDR block
+
+This works for IPv4 and IPv6 addresses. There is also `calc_end_address!/2`.
+
+```elixir
+iex> InetCidr.calc_end_address({192, 168, 0, 0}, 16)
+{:ok, {192, 168, 255, 255}}
+```
+
+## Check if an address is in a CIDR block
+
+This works for IPv4 and IPv6 addresses.
+
+```elixir
+iex> cidr = InetCidr.parse_cidr!("192.168.0.0/16")
+{{192,168,0,0}, {192,168,255,255}, 16}
+
+iex> address1 = InetCidr.parse_address!("192.168.15.20")
+{192,168,15,20}
+
+iex> InetCidr.contains?(cidr, address1)
+true
+```

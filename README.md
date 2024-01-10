@@ -28,26 +28,26 @@ end
 ### Parsing a CIDR string (IPv4 or IPv6)
 
 ```elixir
-iex(1)> InetCidr.parse_cidr("192.168.0.0/16")
+iex> InetCidr.parse_cidr("192.168.0.0/16")
 {:ok, {{192,168,0,0}, {192,168,255,255}, 16}}
 
-iex(2)> InetCidr.parse_cidr!("192.168.0.0/16")
+iex> InetCidr.parse_cidr!("192.168.0.0/16")
 {{192,168,0,0}, {192,168,255,255}, 16}
 
-iex(3)> InetCidr.parse_cidr("2001:abcd::/32")
+iex> InetCidr.parse_cidr("2001:abcd::/32")
 {:ok, {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}}
 
-iex(4)> InetCidr.parse_cidr!("2001:abcd::/32")
+iex> InetCidr.parse_cidr!("2001:abcd::/32")
 {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}
 ```
 
 ### Printing a CIDR block to string
 
 ```elixir
-iex(1)> "192.168.0.0/16" |> InetCidr.parse_cidr! |> InetCidr.to_string
+iex> "192.168.0.0/16" |> InetCidr.parse_cidr! |> InetCidr.to_string
 "192.168.0.0/16"
 
-iex(2)> "2001:abcd::/32" |> InetCidr.parse_cidr! |> InetCidr.to_string
+iex> "2001:abcd::/32" |> InetCidr.parse_cidr! |> InetCidr.to_string
 "2001:ABCD::/32"
 ```
 
@@ -58,39 +58,49 @@ There are also `parse_cidr/1` and `parse_address/1` versions that return `{:ok,_
 #### IPv4
 
 ```elixir
-iex(1)> cidr = InetCidr.parse_cidr!("192.168.0.0/16")
+iex> cidr = InetCidr.parse_cidr!("192.168.0.0/16")
 {{192,168,0,0}, {192,168,255,255}, 16}
 
-iex(2)> address1 = InetCidr.parse_address!("192.168.15.20")
+iex> address1 = InetCidr.parse_address!("192.168.15.20")
 {192,168,15,20}
 
-iex(3)> InetCidr.contains?(cidr, address1)
+iex> InetCidr.contains?(cidr, address1)
 true
 
-iex(4)> address2 = InetCidr.parse_address!("10.168.15.20")
+iex> address2 = InetCidr.parse_address!("10.168.15.20")
 {10,168,15,20}
 
-iex(5)> InetCidr.contains?(cidr, address2)
+iex> InetCidr.contains?(cidr, address2)
 false
 ```
 
 #### IPv6
 
 ```elixir
-iex(1)> cidr = InetCidr.parse_cidr!("2001:abcd::/32")
+iex> cidr = InetCidr.parse_cidr!("2001:abcd::/32")
 {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535}, 32}
 
-iex(2)> address1 = InetCidr.parse_address!("2001:abcd::")
+iex> address1 = InetCidr.parse_address!("2001:abcd::")
 {8193, 43981, 0, 0, 0, 0, 0, 0}
 
-iex(3)> InetCidr.contains?(cidr, address1)
+iex> InetCidr.contains?(cidr, address1)
 true
 
-iex(4)> address2 = InetCidr.parse_address!("abcd:2001::")
+iex> address2 = InetCidr.parse_address!("abcd:2001::")
 {43981, 8193, 0, 0, 0, 0, 0, 0}
 
-iex(5)> InetCidr.contains?(cidr, address2)
+iex> InetCidr.contains?(cidr, address2)
 false
+```
+
+### Get the end of a CIDR block
+
+```elixir
+iex> InetCidr.calc_end_address({192, 168, 0, 0}, 16)
+{:ok, {192, 168, 255, 255}}
+
+iex> InetCidr.calc_end_address!({192, 168, 0, 0}, 16)
+{192, 168, 255, 255}
 ```
 
 ## License

@@ -21,7 +21,7 @@ defmodule InetCidr do
   @deprecated "Use `parse_cidr!/2` instead (or `parse_cidr/2` for {:ok, {start,end,prefix}} / {:error,msg} tuples)"
   def parse(cidr_string, adjust \\ false) do
     {start_address, prefix_length} = parse_cidr_block!(cidr_string, adjust)
-    end_address = calc_end_address(start_address, prefix_length)
+    end_address = calc_end_address!(start_address, prefix_length)
     {start_address, end_address, prefix_length}
   end
 
@@ -184,11 +184,30 @@ defmodule InetCidr do
   end
 
   @doc """
-  Calculates the end of a CIDR block given the start address and prefix length.
+  Calculates the end of a CIDR block given the start address (tuple) and prefix length.
 
-  Assumes valid start address and prefix length.
+  Returns an `{:ok, end_address}` tuple if the start address and prefix length are valid.
+  Returns {:error, reason} if the start address or prefix length are invalid.
   """
   def calc_end_address(start_address, prefix_length) do
+    try do
+      {:ok, calc_end_address!(start_address, prefix_length)}
+    rescue
+      e ->
+        # do NOT double wrap error tuples
+        case e do
+          {:error, err} -> {:error, err}
+          err -> {:error, err}
+        end
+    end
+  end
+
+  @doc """
+  Calculates the end of a CIDR block given the start address (tuple) and prefix length.
+
+  Assumes valid start address and prefix length. Raises an exception if either is invalid.
+  """
+  def calc_end_address!(start_address, prefix_length) do
     bor_with_mask(start_address, end_mask(start_address, prefix_length))
   end
 

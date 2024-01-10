@@ -185,4 +185,19 @@ defmodule InetCidrTest do
     assert InetCidr.contains?(block, {65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535}) ==
              false
   end
+
+  test "get the end of a CIDR block" do
+    assert InetCidr.calc_end_address({192, 168, 0, 0}, 16) == {:ok, {192, 168, 255, 255}}
+    assert InetCidr.calc_end_address!({192, 168, 0, 0}, 4) == {207, 255, 255, 255}
+
+    assert InetCidr.calc_end_address({192, 168, 0, 0}, 409) ==
+             {:error, %FunctionClauseError{module: InetCidr, function: :end_mask, arity: 2}}
+
+    assert_raise(
+      FunctionClauseError,
+      fn ->
+        InetCidr.calc_end_address!({192, 168, 0, 0}, 409)
+      end
+    )
+  end
 end

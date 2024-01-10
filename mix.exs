@@ -34,7 +34,7 @@ defmodule InetCidr.Mixfile do
       main: "InetCidr",
       # source_url: @source_url,
       # extra_section: [],
-      extras: ["README.md", "LICENSE"],
+      extras: ["README.md", "LICENSE", "CHANGELOG.md"],
       # api_reference: false
       authors: ["Bryan Weber"]
     ]

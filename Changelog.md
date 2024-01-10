@@ -1,12 +1,20 @@
 # InetCidr Changelog
 
-### Version: 1.0.7 (Jan 10, 2024)
+## Version: 1.0.8 (2024-01-10)
+
+```
+Code: Updated `calc_end_address/1` to return `{:ok, address}` or `{:error, reason}` tuple.
+Code: Added `cal_end_address!/1`
+Misc: Added Cheatsheet
+```
+
+## Version: 1.0.7 (2024-01-10) DO NOT USE
 
 ```
 Docs: Updated README to not use deprecated functions
 ```
 
-### Version: 1.0.6 (Jan 10, 2024)
+## Version: 1.0.6 (2024-01-10)
 
 ```
 - Deprecated: InetCidr.parse/1 (Use InetCidr.parse_cidr!/1 instead)
@@ -16,7 +24,7 @@ Docs: Updated README to not use deprecated functions
 - Code: Added InetCidr.parse_address/1 which complements the existing InetCidr.parse_address!/1
 ```
 
-### Version: 1.0.5 (Jan 9, 2024)
+## Version: 1.0.5 (2024-01-09)
 
 ```
 - Compiler warnings: Fixed deprecation warning for `use Bitwise`
@@ -24,19 +32,19 @@ Docs: Updated README to not use deprecated functions
 - Dependencies: Updated `ex_doc` version
 ```
 
-### Version: 1.0.4 (Aug 30, 2018)
+## Version: 1.0.4 (2018-08-30)
 
 ```
 - Bugfix: Fix pattern match to use `48` instead of `49`
 ```
 
-### Version: 1.0.3 (Aug 8, 2018)
+## Version: 1.0.3 (2018-08-08)
 
 ```
 - Compiler warnings: Replace `String.to_char_list` with `String.to_charlist` to fix compiler warning
 ```
 
-### Version: 1.0.2 (Feb 3, 2017)
+## Version: 1.0.2 (2017-02-03)
 
 ```
 - Misc: Update `contributors` to `maintainers` in mix.exs
@@ -44,14 +52,14 @@ Docs: Updated README to not use deprecated functions
 - Compiler Warnings: In mix.exs to use parens in function calls to fix compiler warnings
 ```
 
-### Version: 1.0.1 (July 17, 2015)
+## Version: 1.0.1 (2015-07-17)
 
 ```
 - Code: Fix hard coded bmask to use `rem` (no behavioral change)
 - Misc: Update description in mix.exs to remove unnecessary text
 ```
 
-### Version: 1.0.0 (July 17, 2015)
+## Version: 1.0.0 (2015-07-17)
 
 ```
 - Initial release 🎉
