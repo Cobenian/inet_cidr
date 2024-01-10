@@ -49,7 +49,11 @@ defmodule InetCidr.Mixfile do
       contributors: ["Bryan Weber"],
       maintainers: ["Bryan Weber"],
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => @source_url}
+      links: %{
+        "GitHub" => @source_url,
+        "Changelog" => "https://hexdocs.pm/inet_cidr/changelog.html",
+        "Cheatsheet" => "https://hexdocs.pm/inet_cidr/cheetsheet.html"
+      }
     ]
   end
 end
