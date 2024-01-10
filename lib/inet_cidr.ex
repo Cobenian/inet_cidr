@@ -25,6 +25,7 @@ defmodule InetCidr do
     {start_address, end_address, prefix_length}
   end
 
+  @doc since: "1.0.6"
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
   notation like `192.168.0.0/16` or `2001:abcd::/32`. 
@@ -51,6 +52,7 @@ defmodule InetCidr do
     end
   end
 
+  @doc since: "1.0.6"
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
   notation like `192.168.0.0/16` or `2001:abcd::/32`. It returns a tuple with the
@@ -66,6 +68,7 @@ defmodule InetCidr do
     parse(cidr_string, adjust)
   end
 
+  @doc since: "1.0.6"
   @doc """
   Convenience function that takes an IPv4 or IPv6 address as a string and
   returns the address.  
@@ -88,6 +91,7 @@ defmodule InetCidr do
     end
   end
 
+  @doc since: "1.0.6"
   @doc """
   Convenience function that takes an IPv4 or IPv6 address as a string and
   returns the address.  It raises an exception if the string does not contain
@@ -183,6 +187,7 @@ defmodule InetCidr do
     {masked, prefix_length}
   end
 
+  @doc since: "1.0.7"
   @doc """
   Calculates the end of a CIDR block given the start address (tuple) and prefix length.
 
@@ -202,6 +207,7 @@ defmodule InetCidr do
     end
   end
 
+  @doc since: "1.0.7"
   @doc """
   Calculates the end of a CIDR block given the start address (tuple) and prefix length.
 
