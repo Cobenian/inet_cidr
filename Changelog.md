@@ -1,5 +1,12 @@
 # InetCidr Changelog
 
+## Version: 1.0.8 (2025-12-12)
+
+```
+Misc: Fixed compiler warnings from Elixir 1.18
+Thanks to lukaszsamson and andyleclair for reporting this.
+```
+
 ## Version: 1.0.8 (2024-01-10)
 
 ```

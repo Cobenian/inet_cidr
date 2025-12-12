@@ -105,7 +105,7 @@ iex> InetCidr.calc_end_address!({192, 168, 0, 0}, 16)
 
 ## License
 
-Copyright (c) 2015-2024 Cobenian and Bryan Weber
+Copyright (c) 2015-2025 Cobenian and Bryan Weber
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
