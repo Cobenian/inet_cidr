@@ -28,12 +28,12 @@ defmodule InetCidr do
   @doc since: "1.0.6"
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
-  notation like `192.168.0.0/16` or `2001:abcd::/32`. 
+  notation like `192.168.0.0/16` or `2001:abcd::/32`.
 
   You can optionally pass true as the second argument to adjust the start `IP`
   address if it is not consistent with the cidr length.
   For example, `192.168.0.0/0` would be adjusted to have a start IP of `0.0.0.0`
-  instead of `192.168.0.0`. 
+  instead of `192.168.0.0`.
 
   It returns an `{:ok, {start address, end address, cidr length}}` tuple if the string contains a valid IP address.
 
@@ -69,7 +69,7 @@ defmodule InetCidr do
   @doc since: "1.0.6"
   @doc """
   Convenience function that takes an IPv4 or IPv6 address as a string and
-  returns the address.  
+  returns the address.
 
   It returns an `{:ok, address}` tuple if the string contains a valid IP address.
 
@@ -162,6 +162,15 @@ defmodule InetCidr do
       do: true
 
   def v6?(_), do: false
+
+  @doc """
+  Returns true if CIDR1 and CIDR2 have no addresses in common (no overlap).
+  """
+  def disjoint?(
+        {start_address1, _end_address1, _len1} = cidr1,
+        {start_address2, _end_address2, _len2} = cidr2
+      ),
+      do: not contains?(cidr1, start_address2) and not contains?(cidr2, start_address1)
 
   # internal functions
 
