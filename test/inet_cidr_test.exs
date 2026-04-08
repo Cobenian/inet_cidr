@@ -200,4 +200,67 @@ defmodule InetCidrTest do
       end
     )
   end
+
+  test "disjoint? with non-overlapping ipv4 blocks" do
+    block1 = {{192, 168, 0, 0}, {192, 168, 0, 255}, 24}
+    block2 = {{192, 168, 1, 0}, {192, 168, 1, 255}, 24}
+    assert InetCidr.disjoint?(block1, block2) == true
+    assert InetCidr.disjoint?(block2, block1) == true
+  end
+
+  test "disjoint? with overlapping ipv4 blocks" do
+    block1 = {{192, 168, 0, 0}, {192, 168, 255, 255}, 16}
+    block2 = {{192, 168, 1, 0}, {192, 168, 1, 255}, 24}
+    assert InetCidr.disjoint?(block1, block2) == false
+    assert InetCidr.disjoint?(block2, block1) == false
+  end
+
+  test "disjoint? with identical ipv4 blocks" do
+    block = {{10, 0, 0, 0}, {10, 0, 0, 255}, 24}
+    assert InetCidr.disjoint?(block, block) == false
+  end
+
+  test "disjoint? with adjacent ipv4 blocks" do
+    block1 = {{10, 0, 0, 0}, {10, 0, 0, 127}, 25}
+    block2 = {{10, 0, 0, 128}, {10, 0, 0, 255}, 25}
+    assert InetCidr.disjoint?(block1, block2) == true
+    assert InetCidr.disjoint?(block2, block1) == true
+  end
+
+  test "disjoint? with non-overlapping ipv6 blocks" do
+    block1 =
+      {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535},
+       32}
+
+    block2 =
+      {{8193, 43982, 0, 0, 0, 0, 0, 0}, {8193, 43982, 65535, 65535, 65535, 65535, 65535, 65535},
+       32}
+
+    assert InetCidr.disjoint?(block1, block2) == true
+    assert InetCidr.disjoint?(block2, block1) == true
+  end
+
+  test "disjoint? with overlapping ipv6 blocks" do
+    block1 =
+      {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535},
+       32}
+
+    block2 =
+      {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 8191, 65535, 65535, 65535, 65535, 65535},
+       35}
+
+    assert InetCidr.disjoint?(block1, block2) == false
+    assert InetCidr.disjoint?(block2, block1) == false
+  end
+
+  test "disjoint? with ipv4 and ipv6 blocks returns true" do
+    block_v4 = {{192, 168, 0, 0}, {192, 168, 255, 255}, 16}
+
+    block_v6 =
+      {{8193, 43981, 0, 0, 0, 0, 0, 0}, {8193, 43981, 65535, 65535, 65535, 65535, 65535, 65535},
+       32}
+
+    assert InetCidr.disjoint?(block_v4, block_v6) == true
+    assert InetCidr.disjoint?(block_v6, block_v4) == true
+  end
 end
