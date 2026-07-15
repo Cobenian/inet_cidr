@@ -10,7 +10,7 @@ defmodule InetCidrTest do
              {:ok, {{0, 0, 0, 0}, {255, 255, 255, 255}, 0}}
 
     assert InetCidr.parse_cidr("192.168.0.0/2") ==
-             {:error, %RuntimeError{message: "Invalid CIDR: 192.168.0.0/2"}}
+             {:error, %ArgumentError{message: "Invalid CIDR: 192.168.0.0/2"}}
   end
 
   test "can parse ipv4 cidr block" do
@@ -35,7 +35,7 @@ defmodule InetCidrTest do
     assert InetCidr.parse_cidr!("192.168.0.0/32") == {{192, 168, 0, 0}, {192, 168, 0, 0}, 32}
 
     assert_raise(
-      RuntimeError,
+      ArgumentError,
       "Invalid CIDR: 192.168.0.0/2",
       fn ->
         InetCidr.parse_cidr!("192.168.0.0/2")
@@ -91,12 +91,12 @@ defmodule InetCidrTest do
     assert InetCidr.parse_address("76.58.129.251") == {:ok, {76, 58, 129, 251}}
 
     assert InetCidr.parse_address("76.58.abc.251") ==
-             {:error, %RuntimeError{message: "Invalid address: 76.58.abc.251"}}
+             {:error, %ArgumentError{message: "Invalid address: 76.58.abc.251"}}
 
     assert InetCidr.parse_address!("76.58.129.251") == {76, 58, 129, 251}
 
     assert_raise(
-      RuntimeError,
+      ArgumentError,
       "Invalid address: 76.58.abc.256",
       fn ->
         InetCidr.parse_address!("76.58.abc.256")
@@ -109,7 +109,7 @@ defmodule InetCidrTest do
     assert InetCidr.parse_address!("1:abcd::4") == {1, 43981, 0, 0, 0, 0, 0, 4}
 
     assert_raise(
-      RuntimeError,
+      ArgumentError,
       "Invalid address: 1:vwxyz::4",
       fn ->
         InetCidr.parse_address!("1:vwxyz::4")
