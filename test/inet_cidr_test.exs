@@ -139,6 +139,8 @@ defmodule InetCidrTest do
     assert InetCidr.v4?({192, 168, 0}) == false
     assert InetCidr.v4?({192, 168, 0, 0, 0}) == false
     assert InetCidr.v4?(InetCidr.parse_address!("2001::abcd")) == false
+    assert InetCidr.v4?(InetCidr.parse_cidr!("0.0.0.0/0")) == true
+    assert InetCidr.v4?(InetCidr.parse_cidr!("::0/0")) == false
   end
 
   test "is ipv6 address?" do
@@ -147,6 +149,8 @@ defmodule InetCidrTest do
     assert InetCidr.v6?({8193, 43981, 0, 0, 0, 0, 0, 70000}) == false
     assert InetCidr.v6?({8193, 43981, 0, 0, 0, 0, 0}) == false
     assert InetCidr.v6?({8193, 43981, 0, 0, 0, 0, 0, 0, 0}) == false
+    assert InetCidr.v6?(InetCidr.parse_cidr!("0.0.0.0/0")) == false
+    assert InetCidr.v6?(InetCidr.parse_cidr!("::0/0")) == true
   end
 
   test "ipv4 block contains address?" do

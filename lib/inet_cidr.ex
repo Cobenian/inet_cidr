@@ -10,8 +10,12 @@ defmodule InetCidr do
   @type cidr_length_v4 :: 0..32
   @type cidr_length_v6 :: 0..128
   @type cidr_length :: cidr_length_v4() | cidr_length_v6()
-  @type cidr_v4 :: {start :: :inet.ip4_address(), last :: :inet.ip4_address(), cidr_length_v4()}
-  @type cidr_v6 :: {start :: :inet.ip6_address(), last :: :inet.ip6_address(), cidr_length_v6()}
+  @type cidr_v4 ::
+          {start_address :: :inet.ip4_address(), end_address :: :inet.ip4_address(),
+           cidr_length_v4()}
+  @type cidr_v6 ::
+          {start_address :: :inet.ip6_address(), end_address :: :inet.ip6_address(),
+           cidr_length_v6()}
   @type cidr :: cidr_v4() | cidr_v6()
 
   @doc """
@@ -168,16 +172,24 @@ defmodule InetCidr do
   def contains?(_, _), do: false
 
   @doc """
-  Returns true if the value passed in is an IPv4 address, false otherwise.
+  Returns true if the value passed in is an IPv4 address or CIDR, false otherwise.
+  In the case of a CIDR, both start and end addresses are checked.
   """
-  @spec v4?(:inet.ip_address()) :: boolean()
+  @spec v4?(:inet.ip_address() | cidr()) :: boolean()
+  def v4?({start_address, end_address, _length}),
+    do: v4?(start_address) and v4?(end_address)
+
   def v4?({a, b, c, d}) when a in 0..255 and b in 0..255 and c in 0..255 and d in 0..255, do: true
   def v4?(_), do: false
 
   @doc """
-  Returns true if the value passed in is an IPv6 address, false otherwise.
+  Returns true if the value passed in is an IPv6 address or CIDR, false otherwise.
+  In the case of a CIDR, both start and end addresses are checked.
   """
-  @spec v6?(:inet.ip_address()) :: boolean()
+  @spec v6?(:inet.ip_address() | cidr()) :: boolean()
+  def v6?({start_address, end_address, _length}),
+    do: v6?(start_address) and v6?(end_address)
+
   def v6?({a, b, c, d, e, f, g, h})
       when a in 0..65535 and b in 0..65535 and c in 0..65535 and d in 0..65535 and e in 0..65535 and
              f in 0..65535 and g in 0..65535 and h in 0..65535,
