@@ -7,6 +7,17 @@ defmodule InetCidr do
 
   import Bitwise
 
+  @type cidr_length_v4 :: 0..32
+  @type cidr_length_v6 :: 0..128
+  @type cidr_length :: cidr_length_v4() | cidr_length_v6()
+  @type cidr_v4 ::
+          {start_address :: :inet.ip4_address(), end_address :: :inet.ip4_address(),
+           cidr_length_v4()}
+  @type cidr_v6 ::
+          {start_address :: :inet.ip6_address(), end_address :: :inet.ip6_address(),
+           cidr_length_v6()}
+  @type cidr :: cidr_v4() | cidr_v6()
+
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
   notation like `192.168.0.0/16` or `2001:abcd::/32`. It returns a tuple with the
@@ -19,6 +30,7 @@ defmodule InetCidr do
   an exception when this occurs.
   """
   @deprecated "Use `parse_cidr!/2` instead (or `parse_cidr/2` for {:ok, {start,end,prefix}} / {:error,msg} tuples)"
+  @spec parse(cidr_string :: String.t(), adjust :: boolean()) :: cidr()
   def parse(cidr_string, adjust \\ false) do
     {start_address, prefix_length} = parse_cidr_block!(cidr_string, adjust)
     end_address = calc_end_address!(start_address, prefix_length)
@@ -28,17 +40,19 @@ defmodule InetCidr do
   @doc since: "1.0.6"
   @doc """
   Parses a string containing either an IPv4 or IPv6 CIDR block using the
-  notation like `192.168.0.0/16` or `2001:abcd::/32`. 
+  notation like `192.168.0.0/16` or `2001:abcd::/32`.
 
   You can optionally pass true as the second argument to adjust the start `IP`
   address if it is not consistent with the cidr length.
   For example, `192.168.0.0/0` would be adjusted to have a start IP of `0.0.0.0`
-  instead of `192.168.0.0`. 
+  instead of `192.168.0.0`.
 
   It returns an `{:ok, {start address, end address, cidr length}}` tuple if the string contains a valid IP address.
 
   It returns an `{:error, reason}` tuple if the it cannot be parsed.
   """
+  @spec parse_cidr(cidr_string :: String.t(), adjust :: boolean()) ::
+          {:ok, cidr()} | {:error, term() | %ArgumentError{}}
   def parse_cidr(cidr_string, adjust \\ false) do
     try do
       {:ok, parse_cidr!(cidr_string, adjust)}
@@ -62,6 +76,7 @@ defmodule InetCidr do
   instead of `192.168.0.0`. The default behavior is to be more strict and raise
   an exception when this occurs.
   """
+  @spec parse_cidr(cidr_string :: String.t(), adjust :: boolean()) :: cidr()
   def parse_cidr!(cidr_string, adjust \\ false) do
     parse(cidr_string, adjust)
   end
@@ -69,16 +84,18 @@ defmodule InetCidr do
   @doc since: "1.0.6"
   @doc """
   Convenience function that takes an IPv4 or IPv6 address as a string and
-  returns the address.  
+  returns the address.
 
   It returns an `{:ok, address}` tuple if the string contains a valid IP address.
 
   It returns an `{:error, reason}` tuple if the string
   does not contain a valid IP address.
   """
-  def parse_address(prefix) do
+  @spec parse_address(address :: String.t()) ::
+          {:ok, :inet.ip_address()} | {:error, term() | %ArgumentError{}}
+  def parse_address(address) do
     try do
-      {:ok, parse_address!(prefix)}
+      {:ok, parse_address!(address)}
     rescue
       e ->
         case e do
@@ -93,10 +110,11 @@ defmodule InetCidr do
   returns the address.  It raises an exception if the string does not contain
   a valid IP address.
   """
+  @spec parse_address!(address :: String.t()) :: :inet.ip_address()
   def parse_address!(prefix) do
     case prefix |> String.to_charlist() |> :inet.parse_address() do
       {:ok, start_address} -> start_address
-      {:error, _} -> raise "Invalid address: #{prefix}"
+      {:error, _} -> raise ArgumentError, "Invalid address: #{prefix}"
     end
   end
 
@@ -104,6 +122,7 @@ defmodule InetCidr do
   Prints the CIDR block to a string such that it can be parsed back to a CIDR
   block by this module.
   """
+  @spec to_string(cidr()) :: String.t()
   def to_string({start_address, _end_address, cidr_length}) do
     "#{:inet.ntoa(start_address)}/#{cidr_length}"
   end
@@ -111,6 +130,7 @@ defmodule InetCidr do
   @doc """
   The number of IP addresses included in the CIDR block.
   """
+  @spec address_count(ip :: :inet.ip_address(), len :: cidr_length()) :: non_neg_integer()
   def address_count(ip, len) do
     1 <<< (bit_count(ip) - len)
   end
@@ -118,12 +138,16 @@ defmodule InetCidr do
   @doc """
   The number of bits in the address family (32 for IPv4 and 128 for IPv6)
   """
+  @spec bit_count(ip :: :inet.ip_address()) :: 32 | 128
   def bit_count({_, _, _, _}), do: 32
   def bit_count({_, _, _, _, _, _, _, _}), do: 128
 
   @doc """
   Returns true if the CIDR block contains the IP address, false otherwise.
   """
+  @spec contains?(cidr(), :inet.ip_address()) :: boolean()
+  def contains?(cidr, address)
+
   def contains?({{a, b, c, d}, {e, f, g, h}, _prefix_length}, {w, x, y, z}) do
     w in a..e and
       x in b..f and
@@ -148,40 +172,30 @@ defmodule InetCidr do
   def contains?(_, _), do: false
 
   @doc """
-  Returns true if the value passed in is an IPv4 address, false otherwise.
+  Returns true if the value passed in is an IPv4 address or CIDR, false otherwise.
+  In the case of a CIDR, both start and end addresses are checked.
   """
+  @spec v4?(:inet.ip_address() | cidr()) :: boolean()
+  def v4?({start_address, end_address, _length}),
+    do: v4?(start_address) and v4?(end_address)
+
   def v4?({a, b, c, d}) when a in 0..255 and b in 0..255 and c in 0..255 and d in 0..255, do: true
   def v4?(_), do: false
 
   @doc """
-  Returns true if the value passed in is an IPv6 address, false otherwise.
+  Returns true if the value passed in is an IPv6 address or CIDR, false otherwise.
+  In the case of a CIDR, both start and end addresses are checked.
   """
+  @spec v6?(:inet.ip_address() | cidr()) :: boolean()
+  def v6?({start_address, end_address, _length}),
+    do: v6?(start_address) and v6?(end_address)
+
   def v6?({a, b, c, d, e, f, g, h})
       when a in 0..65535 and b in 0..65535 and c in 0..65535 and d in 0..65535 and e in 0..65535 and
              f in 0..65535 and g in 0..65535 and h in 0..65535,
       do: true
 
   def v6?(_), do: false
-
-  # internal functions
-
-  defp parse_cidr_block!(cidr_string, adjust) do
-    [prefix, prefix_length_str] = String.split(cidr_string, "/", parts: 2)
-    start_address = parse_address!(prefix)
-    {prefix_length, _} = Integer.parse(prefix_length_str)
-    # if something 'nonsensical' is passed in like 192.168.0.0/0
-    # we have three choices:
-    # a) leave it alone (we do NOT allow this)
-    # b) adjust the start ip (to 0.0.0.0 in this case) - when adjust == true
-    # c) raise an exception - when adjust != true
-    masked = band_with_mask(start_address, start_mask(start_address, prefix_length))
-
-    if not adjust and masked != start_address do
-      raise "Invalid CIDR: #{cidr_string}"
-    end
-
-    {masked, prefix_length}
-  end
 
   @doc since: "1.0.7"
   @doc """
@@ -190,6 +204,8 @@ defmodule InetCidr do
   Returns an `{:ok, end_address}` tuple if the start address and prefix length are valid.
   Returns {:error, reason} if the start address or prefix length are invalid.
   """
+  @spec calc_end_address(:inet.ip_address(), cidr_length()) ::
+          {:ok, :inet.ip_address()} | {:error, term() | %ArgumentError{}}
   def calc_end_address(start_address, prefix_length) do
     try do
       {:ok, calc_end_address!(start_address, prefix_length)}
@@ -207,8 +223,29 @@ defmodule InetCidr do
 
   Assumes valid start address and prefix length. Raises an exception if either is invalid.
   """
+  @spec calc_end_address!(:inet.ip_address(), cidr_length()) :: :inet.ip_address()
   def calc_end_address!(start_address, prefix_length) do
     bor_with_mask(start_address, end_mask(start_address, prefix_length))
+  end
+
+  # internal functions
+
+  defp parse_cidr_block!(cidr_string, adjust) do
+    [prefix, prefix_length_str] = String.split(cidr_string, "/", parts: 2)
+    start_address = parse_address!(prefix)
+    {prefix_length, _} = Integer.parse(prefix_length_str)
+    # if something 'nonsensical' is passed in like 192.168.0.0/0
+    # we have three choices:
+    # a) leave it alone (we do NOT allow this)
+    # b) adjust the start ip (to 0.0.0.0 in this case) - when adjust == true
+    # c) raise an exception - when adjust != true
+    masked = band_with_mask(start_address, start_mask(start_address, prefix_length))
+
+    if not adjust and masked != start_address do
+      raise ArgumentError, "Invalid CIDR: #{cidr_string}"
+    end
+
+    {masked, prefix_length}
   end
 
   defp start_mask(s = {_, _, _, _}, len) when len in 0..32 do
